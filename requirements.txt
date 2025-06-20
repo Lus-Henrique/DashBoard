@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+openpyxl
+jinja2
+selenium
+webdriver-manager
+python-dotenv
+requests

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>VENCIMENTOS LOGGI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 0;
+        }
+        .faixa-atualizacao {
+            width: 100%;
+            background: #00a6ff;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            min-height: 48px;
+        }
+        .atualizacao-info {
+            color: #fff;
+            font-size: 1.12em;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-left: 32px;
+            opacity: 0.98;
+        }
+        .titulo-topo {
+            width: 100%;
+            background: linear-gradient(90deg,#00baff 0%,#007cff 100%);
+            padding: 36px 0 24px 0;
+            margin-bottom: 24px;
+        }
+        .titulo-topo h1 {
+            color: #fff;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 2.8em;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: center;
+            margin: 0;
+        }
+        .filtro-data-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .filtro-data-form label {
+            font-weight: 600;
+            color: #222;
+        }
+        .filtro-data-form input[type="date"], .filtro-data-form select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #b7d8f6;
+            font-size: 1em;
+        }
+        .filtro-data-form button {
+            padding: 6px 18px;
+            border-radius: 6px;
+            background: #00baff;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .filtro-data-form a {
+            margin-left: 8px;
+            color: #00baff;
+            text-decoration: underline;
+            font-size: 1em;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto 32px auto;
+            padding: 0 2vw;
+        }
+        .table-wrapper {
+            background: #fff;
+            border-radius: 23px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.08);
+            padding: 32px 18px 24px 18px;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            min-width: 700px;
+            background: transparent;
+        }
+        th, td {
+            padding: 18px 10px;
+            text-align: center;
+            font-weight: 700;
+            color: #222;
+            background: transparent;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 1.4em;
+        }
+        thead th {
+            background: #00a6ff !important;
+            color: #fff !important;
+            font-size: 1.6em;
+            border-bottom: 2px solid #e0e8f0;
+        }
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+        tbody tr {
+            background: #fff;
+            border-radius: 12px;
+        }
+        tbody tr:not(:last-child) {
+            border-bottom: 1px solid #e0e8f0;
+        }
+        .total-row th, .total-row td {
+            background: #00a6ff !important;
+            color: #fff !important;
+            font-weight: 800;
+            border-top: 2px solid #e0e8f0;
+        }
+        /* .total-col { }  Removido para evitar bloco vazio */
+        table thead tr:first-child th:first-child {
+            border-top-left-radius: 23px;
+        }
+        table thead tr:first-child th:last-child {
+            border-top-right-radius: 23px;
+        }
+        table tbody tr:last-child th:first-child {
+            border-bottom-left-radius: 23px;
+        }
+        table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 23px;
+        }
+        .table-wrapper.entregadores-table table {
+            min-width: 350px;
+            width: 60%;
+            margin: 0 auto;
+        }
+        .table-wrapper.entregadores-table th,
+        .table-wrapper.entregadores-table td {
+            padding: 7px 5px;
+            font-size: 1em;
+        }
+        .table-wrapper.entregadores-table thead th {
+            font-size: 1.1em;
+        }
+        @media (max-width: 700px) {
+            .faixa-atualizacao {
+                min-height: 38px;
+            }
+            .atualizacao-info {
+                margin-left: 8px;
+                font-size: 1em;
+            }
+            .titulo-topo h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 0 1vw;
+            }
+            .table-wrapper {
+                padding: 12px 2px 8px 2px;
+            }
+            th, td {
+                padding: 10px 4px;
+                font-size: 1.1em;
+            }
+            table {
+                min-width: 600px;
+            }
+            .table-wrapper.entregadores-table table {
+                min-width: 250px;
+                width: 98%;
+            }
+            .table-wrapper.entregadores-table th,
+            .table-wrapper.entregadores-table td {
+                padding: 5px 2px;
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="faixa-atualizacao">
+        <span class="atualizacao-info">
+            Última atualização: {{ ultima_atualizacao }}
+        </span>
+    </div>
+    <div class="titulo-topo">
+        <h1>Vencimentos Loggi</h1>
+    </div>
+    <div class="container">
+        <!-- Filtro único para as duas tabelas -->
+        <form method="get" class="filtro-data-form">
+            <label for="prazo">Filtrar por data:</label>
+            <input 
+                type="date" 
+                id="prazo" 
+                name="prazo" 
+                value="{{ prazo_selecionado or '' }}" 
+                min="{{ prazos[0] if prazos else '' }}" 
+                max="{{ prazos[-1] if prazos else '' }}"
+            >
+            <label for="base2">Base (entregadores):</label>
+            <select id="base2" name="base2">
+                <option value="">Todas</option>
+                {% for base in bases2 %}
+                    <option value="{{ base }}" {% if base == base2_selecionada %}selected{% endif %}>{{ base }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filtrar</button>
+            {% if prazo_selecionado or base2_selecionada %}
+                <a href="/">Limpar filtro</a>
+            {% endif %}
+        </form>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Base</th>
+                        {% for status in status_permitidos %}
+                            <th>{{ status }}</th>
+                        {% endfor %}
+                        <th class="total-col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for base in bases %}
+                    <tr>
+                        <th>{{ base }}</th>
+                        {% set total_base = tabela[base].values()|sum %}
+                        {% for status in status_permitidos %}
+                            <td>{{ tabela[base][status] }}</td>
+                        {% endfor %}
+                        <td class="total-col">{{ total_base }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <th>TOTAL</th>
+                        {% for status in status_permitidos %}
+                            <td>{{ total_geral[status] }}</td>
+                        {% endfor %}
+                        <td class="total-col">{{ total_geral_geral }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Segunda tabela: Entregadores -->
+    <div class="container">
+        <h2 style="margin-top:40px;">Resumo por Entregador</h2>
+        <div class="table-wrapper entregadores-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entregador</th>
+                        {% for status in status_titulos %}
+                            <th>{{ status }}</th>
+                        {% endfor %}
+                        <th class="total-col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entregador in entregadores %}
+                    <tr>
+                        <th>{{ entregador }}</th>
+                        {% set total_entregador = tabela2[entregador].values()|sum %}
+                        {% for status in status_titulos %}
+                            <td>{{ tabela2[entregador][status] }}</td>
+                        {% endfor %}
+                        <td class="total-col">{{ total_entregador }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <th>TOTAL</th>
+                        {% for status in status_titulos %}
+                            <td>{{ total_geral2[status] }}</td>
+                        {% endfor %}
+                        <td class="total-col">{{ total_geral_geral2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
